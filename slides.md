@@ -2,9 +2,10 @@
 
 ---
 
-## Das Problem
+Wie übermittelt man Errors klar und konsistent in API's?
 
-* Wie übermittelt man Errors klar und konsistent in API's?
+---
+
 * Kein verpflichtendes Format für API-Fehler im HTTP-Standard
 * HTTP-Status-Codes?
   * 400 Bad Request: Was war "*Bad"*?
@@ -12,13 +13,8 @@
 
 ---
 
-* Ohne Standards erfinden Entwickler für jede API ihr eigenes System
-
----
-
 * **Inkonsistenz**
-
-  * Viele APIs definieren eigene, benutzerdefinierte Fehlerformate
+  * Ohne Standards erfinden Entwickler für jede API ihr eigenes System
   * Unterschiedliche Strukturen und Felder in verschiedenen APIs
 
 ---
@@ -38,6 +34,7 @@
 ---
 
 * **Standardisierung im Web** erfolgt über IETF-RFCs
+  * Request for Comments
 * Viele RFCs definieren wichtige Aspekte von HTTP und APIs
 * **2016**: RFC 7807 – *Problem Details for HTTP APIs* führte ein standardisiertes Format ein
 
@@ -51,15 +48,24 @@
 
 ## Problem Details
 
-* HTTP-Statuscodes geben nur eine grobe Information
-* Aber **was genau** ist schiefgelaufen?
-* Wie kann die API dem Client umsetzbare Informationen geben, um dem Benutzer zu helfen?
+* konsistente, strukturierte Fehlerinformationen
+* Eine maschinenlesbare Basis für Tools und Automatisierungen
 
 ---
 
-* *Problem Details*-Format:
-  * konsistente, strukturierte Fehlerinformationen
-  * Eine maschinenlesbare Basis für Tools und Automatisierungen
+### Beispiel
+
+```sh
+curl http://example.com/v1/users -d $BODY
+```
+
+```json
+{
+  "name": "Klaus"
+  "email": "klaus.de",
+  "password": "123"
+}
+```
 
 ---
 
@@ -211,7 +217,6 @@
 
 * Falls nicht vorhanden:
   * Leicht selbst umzusetzen anhand der Spezifikation
-  * Standardfeldnamen und -verhalten beibehalten
 
 ---
 
@@ -223,54 +228,25 @@
 
 ## Best Practices
 
-* **OpenAPI-Spezifikation verwenden**
-  * Mögliche Fehlerantworten in der API-Spezifikation dokumentieren
+---
+
+* **Debug extension feld**
+  * enthält Implementierungsdetails
+  * für den Entwickler
+  * *disabled* auf Prod
 
 ---
 
-### OpenAPI Spec
-
-```yaml
-paths:
-  /v1/users:
-    post:
-      responses:
-        "400":
-          description: Invalid input
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
+```json [7]
+{
+  "type": "https://example.com/problems/no-more-credits",
+  "title": "Not enough credits",
+  "status": 403,
+  "detail": "Not enough credits for user 123",
+  "instance": "/v1/example",
+  "debug": "Exception: CreditLimitException at CreditService.java:42",
+}
 ```
-
----
-
-```yaml
-components:
-  schemas:
-    Problem:
-      type: object
-      required: [type, title, status]
-      properties:
-        type:
-          type: string
-          format: uri
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
-        instance:
-          type: string
-          format: uri
-```
-
----
-
-* **API-Schicht generieren**
-  * Aus der Spezifikation Handler bzw. Controller/Interfaces generieren
-  * *generierter Code ist korrekter code*
 
 ---
 
@@ -280,7 +256,7 @@ components:
 
 ---
 
-### Danke für eure Aufmerksamkeit!
+### Danke für eure Aufmerksamkeit
 
 ---
 
