@@ -1,0 +1,8 @@
+{
+  "transition": "fade",
+  "center": true,
+  "hash": true,
+  "slideNumber": true,
+  "controls": true,
+  "progress": true
+}

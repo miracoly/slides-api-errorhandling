@@ -1,0 +1,35 @@
+/* .img-small { */
+/*   height: 250px !important; */
+/* } */
+/**/
+/* .mt-3 { */
+/*   margin-top: 3rem !important; */
+/* } */
+/**/
+.reveal pre code {
+  max-height: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  white-space: pre-wrap; /* allow long lines to wrap */
+  word-break: break-word; /* wrap long words too */
+  font-size: 0.8em; /* shrink slightly for more room */
+}
+
+.reveal code:not(pre code) {
+  background-color: #f4f4f4;
+  color: #c7254e;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.95em;
+  font-family: Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.05);
+}
+
+/* .reveal .footer-logo { */
+/*   position: absolute; */
+/*   bottom: 10px; */
+/*   left: 20px; */
+/*   width: 3rem; */
+/*   opacity: 0.8; */
+/*   z-index: 10; */
+/* } */
